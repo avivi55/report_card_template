@@ -229,3 +229,11 @@
 \RequirePackage{multicol} % for dividing certain elements in two
 
 \RequirePackage{hyperref} % text reference
+
+\definecolor{doc}{RGB}{0,60,110}
+\hypersetup{
+	pdftitle={Report},
+	colorlinks=true, linkcolor=doc!90,
+	bookmarksnumbered=true,
+	bookmarksopen=true
+}

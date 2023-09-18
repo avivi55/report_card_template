@@ -1,0 +1,6 @@
+*.*
+!*.cls
+!*.sty
+!*.jpg
+!*.md
+!*.gitignore
