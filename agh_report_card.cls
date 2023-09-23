@@ -222,6 +222,7 @@
 \newcommand{\question}[3][\arabic{question_counter}]{%
     \begin{_question}{#1 - #2}#3\end{_question}
     \setcounter{question_counter}{#1+1}
+    \vspace{2mm}
 }
 
 \RequirePackage{tikz-uml} % UML design
@@ -236,4 +237,19 @@
 	colorlinks=true, linkcolor=doc!90,
 	bookmarksnumbered=true,
 	bookmarksopen=true
+}
+
+% The style to be applied for the highlighted line:
+%\lstdefinestyle{highlight}{basicstyle=\ttfamily\bfseries\color{red}}
+\lstdefinestyle{highlight}{backgroundcolor=\color{green!30}}
+
+% input listing and emphasize a specific line
+% \lstinputemph[listings options]{line number}{filename}
+\newcommand{\lstinputemph}[3][\empty]{%                                                    
+ \lstset{aboveskip=0pt, belowskip=0pt, showlines=true,#1}%
+ \ifnumcomp{#2}{=}{0}{\lstinputlisting{#3}}{%
+   \ifnumcomp{#2}{=}{1}{}{\lstinputlisting[lastline=\the\numexpr#2-1\relax]{#3}}%            
+   \lstinputlisting[firstnumber={#2},firstline={#2},lastline={#2},style=highlight]{#3}
+   \lstinputlisting[firstnumber={\the\numexpr#2+1},firstline=\the\numexpr#2+1\relax]{#3}
+ }% else
 }
