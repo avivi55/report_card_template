@@ -148,64 +148,6 @@
 
 \RequirePackage[most,many,breakable]{tcolorbox} % nice boxes
 
-\newtcolorbox{green_emph}{%
-	enhanced,
-	breakable,
-	colback = green!10,
-	frame hidden,
-	boxrule = 0sp,
-	borderline west = {3pt}{0pt}{green},
-	sharp corners,
-	description font = \mdseries,
-	separator sign none,
-	segmentation style={solid, green!85!black}
-}
-
-
-\newtcolorbox{blue_emph}{%
-	enhanced,
-	breakable,
-	colback = theorembg,
-	frame hidden,
-	boxrule = 0sp,
-	borderline west = {3pt}{0pt}{theoremfr},
-	sharp corners,
-	description font = \mdseries,
-	separator sign none,
-	segmentation style={solid, theoremfr}
-}
-
-\newtcolorbox{red_emph}{%
-	enhanced,
-	breakable,
-	colback = lenmabg,
-	frame hidden,
-	boxrule = 0sp,
-	borderline west = {3pt}{0pt}{lenmafr},
-	sharp corners,
-	description font = \mdseries,
-	separator sign none,
-	segmentation style={solid, lenmafr}
-}
-
-\newtcolorbox{lblue_emph}{%
-	enhanced,
-	breakable,
-	frame hidden,
-	boxrule = 0sp,
-	borderline west = {3pt}{0pt}{exercisefg},
-	sharp corners,
-	description font = \mdseries,
-	separator sign none,
-	colback = exercisebg,
-	segmentation style={solid, exercisefg}
-}
-
-\newcommand{\bluebox}[1]{\begin{blue_emph}#1\end{blue_emph}}
-\newcommand{\lbluebox}[1]{\begin{lblue_emph}#1\end{lblue_emph}}
-\newcommand{\greenbox}[1]{\begin{green_emph}#1\end{green_emph}}
-\newcommand{\redbox}[1]{\begin{red_emph}#1\end{red_emph}}
-
 \newcounter{question_counter}
 \setcounter{question_counter}{1}
 
@@ -224,6 +166,21 @@
     \setcounter{question_counter}{#1+1}
     \vspace{2mm}
 }
+
+\newtcolorbox{_note}{%
+	enhanced,
+	breakable,
+	frame hidden,
+	boxrule = 0sp,
+	borderline west = {4pt}{0pt}{themecolor!50!black},
+	sharp corners,
+	description font = \mdseries,
+	separator sign none,
+	colback = themecolor!50!blue!10!white,
+	segmentation style={solid, themecolor}
+}
+\newcommand{\note}[1]{\begin{_note}#1\end{_note}}
+
 
 \RequirePackage{tikz-uml} % UML design
 
