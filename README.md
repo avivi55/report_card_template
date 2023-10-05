@@ -11,4 +11,4 @@ And the full name of the course: https://github.com/avivi55/report_card_template
 
 
 ### THIS IS MY FIRST TIME MAKING A LATEX CLASS, IT IS PROBABLY DOG WATER. 
-(it uses the arev font)\
+(it uses the arev font)
