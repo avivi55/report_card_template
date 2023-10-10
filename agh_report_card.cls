@@ -171,13 +171,22 @@
     colframe = themecolor!80!black,
     colback = themecolor!15!white,
 }
+
+\newcommand{\secondParameterVar}{}
 \newcommand{\question}[3][\arabic{question_counter}]{%
     \ifstrempty{#1}{
         \begin{_question}{#2}#3\end{_question}
     }{
         \setcounter{exercise_counter}{\value{exercise_counter}-1}
-
-        \begin{_question}{\arabic{exercise_counter}.#1 - #2}#3\end{_question}
+        \ifstrempty{#2}{
+            \renewcommand{\secondParameterVar}{#2}
+        }{
+            \renewcommand{\secondParameterVar}{ - #2}
+        }
+        
+        \begin{_question}{\arabic{exercise_counter}.#1\secondParameterVar}%
+            #3
+        \end{_question}
         
         \setcounter{question_counter}{#1+1}
         \setcounter{exercise_counter}{\value{exercise_counter}+1}
