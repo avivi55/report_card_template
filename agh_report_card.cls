@@ -148,6 +148,16 @@
 
 \RequirePackage[most,many,breakable]{tcolorbox} % nice boxes
 
+
+\newcounter{exercise_counter}
+\setcounter{exercise_counter}{1}
+
+\newcommand{\exercise}[2][\arabic{exercise_counter}]{%
+\subsection*{#1 --- #2}
+\setcounter{exercise_counter}{#1+1} 
+}
+
+
 \newcounter{question_counter}
 \setcounter{question_counter}{1}
 
@@ -162,8 +172,16 @@
     colback = themecolor!15!white,
 }
 \newcommand{\question}[3][\arabic{question_counter}]{%
-    \begin{_question}{#1 - #2}#3\end{_question}
-    \setcounter{question_counter}{#1+1}
+    \ifstrempty{#1}{
+        \begin{_question}{#2}#3\end{_question}
+    }{
+        \setcounter{exercise_counter}{\value{exercise_counter}-1}
+
+        \begin{_question}{\arabic{exercise_counter}.#1 - #2}#3\end{_question}
+        
+        \setcounter{question_counter}{#1+1}
+        \setcounter{exercise_counter}{\value{exercise_counter}+1}
+    }
     \vspace{2mm}
 }
 
@@ -180,9 +198,6 @@
 	segmentation style={solid, themecolor}
 }
 \newcommand{\note}[1]{\begin{_note}#1\end{_note}}
-
-
-\RequirePackage{tikz-uml} % UML design
 
 \RequirePackage{multicol} % for dividing certain elements in two
 
