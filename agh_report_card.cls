@@ -147,19 +147,20 @@
 \definecolor{exercisefg}{HTML}{88D6D1}
 
 \RequirePackage[most,many,breakable]{tcolorbox} % nice boxes
-
+\tcbuselibrary{listings}
 
 \newcounter{exercise_counter}
 \setcounter{exercise_counter}{1}
 
-\newcommand{\exercise}[2][\arabic{exercise_counter}]{%
-\subsection*{#1 --- #2}
-\setcounter{exercise_counter}{#1+1} 
-}
-
-
 \newcounter{question_counter}
 \setcounter{question_counter}{1}
+
+\newcommand{\exercise}[2][\arabic{exercise_counter}]{%
+\subsection*{#1 --- #2}
+\setcounter{exercise_counter}{#1+1}
+\setcounter{question_counter}{1}
+}
+
 
 \newtcolorbox{_question}[1]{%
     enhanced,
@@ -208,6 +209,21 @@
 }
 \newcommand{\note}[1]{\begin{_note}#1\end{_note}}
 
+\newtcolorbox{_quote}{%
+	enhanced,
+	breakable,
+	frame hidden,
+	boxrule = 0sp,
+	borderline west = {4pt}{0pt}{white!50!black},
+	sharp corners,
+	description font = \mdseries,
+	separator sign none,
+	colback = black!10!white,
+	segmentation style={solid, gray}
+}
+\renewcommand{\quote}[1]{\begin{_quote}#1\end{_quote}}
+
+
 \RequirePackage{multicol} % for dividing certain elements in two
 
 \RequirePackage{hyperref} % text reference
@@ -234,3 +250,23 @@
    \lstinputlisting[firstnumber={\the\numexpr#2+1},firstline=\the\numexpr#2+1\relax]{#3}
  }% else
 }
+
+\makeatletter
+\let\old@lstKV@SwitchCases\lstKV@SwitchCases
+\def\lstKV@SwitchCases#1#2#3{}
+\makeatother
+\usepackage{lstlinebgrd}
+\makeatletter
+\let\lstKV@SwitchCases\old@lstKV@SwitchCases
+
+\lst@Key{numbers}{none}{%
+    \def\lst@PlaceNumber{\lst@linebgrd}%
+    \lstKV@SwitchCases{#1}%
+    {none:\\%
+     left:\def\lst@PlaceNumber{\llap{\normalfont
+                \lst@numberstyle{\thelstnumber}\kern\lst@numbersep}\lst@linebgrd}\\%
+     right:\def\lst@PlaceNumber{\rlap{\normalfont
+                \kern\linewidth \kern\lst@numbersep
+                \lst@numberstyle{\thelstnumber}}\lst@linebgrd}%
+    }{\PackageError{Listings}{Numbers #1 unknown}\@ehc}}
+\makeatother
