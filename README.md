@@ -1,6 +1,6 @@
 # report_card_template
 
-Personal Report card for my abroad semester.\
+Personal Report card for my lab reports.\
 ![](example.png)\
 The template is made for the courses that I follow. Thus, it probably isn't suited for everybody, but don't worry.
 
