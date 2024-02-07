@@ -1,17 +1,20 @@
-\documentclass[java]{agh_report_card}
-
-% \usepackage{hyperref}
+\documentclass[customsubject]{efrei_report_card}
 
 \title{Lab Report n\degree{1}}
-\subtitle{Java --- elements of OOP (I)}
+\subtitle{test}
 
-\author{Jacques Soghomonyan}
+\author{Author}
+
+\setupcourse{
+    name = Test,
+    color = 098658,
+}
 
 
 \begin{document}
     \maketitle
 
-    \subsection*{1 -- Concepts of encapsulation, inheritance, and polymorphism}
+    \exercise{1 -- Concepts of encapsulation, inheritance, and polymorphism}{
         \question{Encapsulation}{%
             Encapsulation is the way, in Java, the user can assign an \textbf{access modifier} to limit the visibility of certain attributes or methods
         }
@@ -37,15 +40,12 @@
                 \textbf{this}\\
                 \emph{this} is an implicit parameter passed when calling a method of an object
 
-                \
-
                 \columnbreak
 
                 \textbf{Getter}\\
                 The getter method is a method used to make a private attribute readable by users.
             \end{multicols}
         }
-
-
+    }
 
 \end{document}

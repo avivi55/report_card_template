@@ -1,51 +1,93 @@
+% A hard coded class for a lab report document class for EFREI Paris school.
+
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{agh_report_card}[AGH Report Card Template(english)]
+\ProvidesClass{efrei_report_card}[EFREI Report Card Template(French)]
+\RequirePackage{kvoptions}
+\RequirePackage{keyval}
+\SetupKeyvalOptions{
+    family=efrei,
+    prefix=efrei@
+}
 
+\newcommand{\setupcourse}{\kvsetkeys{efrei}}
 
-\newcommand{\subject}{}
+\define@key{efrei}{color}{\newcommand{\efrei@color}{#1}}
+\define@key{efrei}{name}{\newcommand{\efrei@name}{#1}}
 
-\RequirePackage{xcolor}
-\definecolor{java}{HTML}{ec2025}
-\definecolor{arch}{HTML}{face7a}
-\definecolor{network}{HTML}{81ecec}
-\definecolor{oop}{HTML}{7bbbfb}
-\definecolor{os}{HTML}{0984e3}
-\definecolor{web}{HTML}{b2bec3}
+\DeclareBoolOption{cloud}
+\DeclareBoolOption{graphes}
+\DeclareBoolOption{reop}
+\DeclareBoolOption{signal}
+\DeclareBoolOption{cantrans}
+\DeclareBoolOption{comnum}
+\DeclareBoolOption{circuit}
+\DeclareBoolOption{signall}
+\DeclareBoolOption{circuitt}
+\DeclareBoolOption{bdd}
+\DeclareBoolOption{machine}
+\DeclareBoolOption{customsubject}
 
-\DeclareOption{java}    {\renewcommand{\subject}{java}}
-\DeclareOption{arch}    {\renewcommand{\subject}{arch}}
-\DeclareOption{network} {\renewcommand{\subject}{network}}
-\DeclareOption{oop}     {\renewcommand{\subject}{oop}}
-\DeclareOption{os}      {\renewcommand{\subject}{os}}
-\DeclareOption{web}     {\renewcommand{\subject}{web}}
-
-\ProcessOptions\relax
+\ProcessKeyvalOptions*
 
 \LoadClass[a4paper,titlepage,openany]{report}
 
-\colorlet{themecolor}{\subject}
+\RequirePackage{xcolor}
+\definecolor{themecolor}{HTML}{000000}
+\newcommand{\@subject}{Subject Name}
 
-\RequirePackage{ifthen}
-\newcommand{\@subject}{%
-    \ifthenelse{\equal{\subject}{java}}{%
-        Java Programming
-    }{%
-    \ifthenelse{\equal{\subject}{arch}}{%
-        Computer Architecture
-    }{%
-    \ifthenelse{\equal{\subject}{network}}{%
-        Networks \& Protocols
-    }{%
-    \ifthenelse{\equal{\subject}{oop}}{%
-        Object-oriented Analysis \& Design with UML
-    }{%
-    \ifthenelse{\equal{\subject}{os}}{%
-        Operating Systems
-    }{%
-    \ifthenelse{\equal{\subject}{web}}{%
-        Advanced Web Programming
-    }{}}}}}}
-}
+\ifefrei@customsubject
+
+    \AddToHook{begindocument/before}{\definecolor{themecolor}{HTML}{\efrei@color}}
+    \renewcommand{\@subject}{\efrei@name}
+
+\fi
+
+\ifefrei@cloud
+    \definecolor{themecolor}{HTML}{8E402A}
+    \renewcommand{\@subject}{Cloud Computing}
+\fi
+\ifefrei@graphes
+    \definecolor{themecolor}{HTML}{ec2025}
+    \renewcommand{\@subject}{Théorie des graphes}
+\fi
+\ifefrei@reop
+    \definecolor{themecolor}{HTML}{face7a}
+    \renewcommand{\@subject}{Recherche opérationnelle}
+\fi
+\ifefrei@signal
+    \definecolor{themecolor}{HTML}{81ecec}
+    \renewcommand{\@subject}{Théorie du signal 1}
+\fi
+\ifefrei@cantrans
+    \definecolor{themecolor}{HTML}{7bbbfb}
+    \renewcommand{\@subject}{Canaux de transmission}
+\fi
+\ifefrei@comnum
+    \definecolor{themecolor}{HTML}{0984e3}
+    \renewcommand{\@subject}{Communication numérique}
+\fi
+\ifefrei@circuit
+    \definecolor{themecolor}{HTML}{b2bec3}
+    \renewcommand{\@subject}{Concéption de circuit numérique}
+\fi
+\ifefrei@circuitt
+    \definecolor{themecolor}{HTML}{b2bec3}
+    \renewcommand{\@subject}{Concéption de circuit numérique 2}
+\fi
+\ifefrei@signall
+    \definecolor{themecolor}{HTML}{81ecec}
+    \renewcommand{\@subject}{Théorie du signal 2}
+\fi
+\ifefrei@bdd
+    \definecolor{themecolor}{HTML}{1F3438}
+    \renewcommand{\@subject}{Bases de données avancées}
+\fi
+\ifefrei@machine
+    \definecolor{themecolor}{HTML}{7D8471}
+    \renewcommand{\@subject}{Introduction à l'apprentissage Machine}
+\fi
+
+
 
 \RequirePackage{graphicx} % images
 
@@ -85,7 +127,7 @@
     %
     breakatwhitespace=false,         
     breaklines=true,                 
-    captionpos=b,                    
+    caption=b,                    
     %
     numbers=left,                    
     numbersep=5pt,                  
@@ -102,9 +144,9 @@
 \renewcommand{\maketitle}{%
     \begin{titlepage}
         \begin{center}
-            {\huge \bf Akademia G{\'o}rniczo-Hutnicza}\\[1cm]
+            {\huge EFREI Paris }\\[3cm]
             %
-            \includegraphics[scale=0.5]{logo-agh.jpg}\\[4cm]
+            \includegraphics[scale=0.5]{logo_efrei.png}\\[4cm]
             %
             {\Large \bf \@subject}\\[2mm]
             %
@@ -230,7 +272,6 @@
 
 \definecolor{doc}{RGB}{0,60,110}
 \hypersetup{
-	pdftitle={Report},
 	colorlinks=true, linkcolor=doc!90,
 	bookmarksnumbered=true,
 	bookmarksopen=true
