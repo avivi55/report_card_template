@@ -1,92 +1,93 @@
 % A hard coded class for a lab report document class for EFREI Paris school.
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{efrei_report_card}[EFREI Report Card Template(French)]
-\RequirePackage{kvoptions}
-\RequirePackage{keyval}
-\SetupKeyvalOptions{
-    family=efrei,
-    prefix=efrei@
+
+\ExplSyntaxOn
+
+\ProvidesExplClass
+{efrei_report_card}
+{14-12-2024}
+{2.0.5}
+{EFREI~Report~Card~Template(French)}
+
+\RequirePackage{l3keys2e}
+\RequirePackage{xcolor}
+
+\keys_define:nn { report }
+{
+    title .tl_set:N = \g_report_title_tl,
+    title .value_required:n = true,
+
+    subtitle .tl_set:N = \g_report_subtitle_tl,
+
+    nick .tl_set:N = \g_course_nick_tl,
+    nick .initial:n = no_nick,
+
+    name .tl_set:N = \g_course_name_tl,
+    name .initial:n = Name,
+
+    color .tl_set:N = \g_course_color_tl,
+    color .initial:n = 000f00,
+
+    largebox .bool_set:N = \g_use_large_document_bool,
+    largebox .initial:n = false,
 }
 
-\newcommand{\setupcourse}{\kvsetkeys{efrei}}
+\ProcessKeysOptions{report}
 
-\define@key{efrei}{color}{\newcommand{\efrei@color}{#1}}
-\define@key{efrei}{name}{\newcommand{\efrei@name}{#1}}
+\prop_const_from_keyval:Nn \l_courses_color_prop {
+    sys_tr_color    = 8E402A,
+    sys_tr_name    = {Systèmes~Temps~Réel},
 
-\DeclareBoolOption{cloud}
-\DeclareBoolOption{graphes}
-\DeclareBoolOption{reop}
-\DeclareBoolOption{signal}
-\DeclareBoolOption{cantrans}
-\DeclareBoolOption{comnum}
-\DeclareBoolOption{circuit}
-\DeclareBoolOption{signall}
-\DeclareBoolOption{circuitt}
-\DeclareBoolOption{bdd}
-\DeclareBoolOption{machine}
-\DeclareBoolOption{customsubject}
+    signal_color    = ec2025,
+    signal_name    = {Traitement~numérique~du~signal},
 
-\ProcessKeyvalOptions*
+    com_num_color   = 922B3E,
+    com_num_name   = {Communication~numérique},
+
+    logiciel_color  = 7bbbfb,
+    logiciel_name  = {Logiciel~Embarqué},
+
+    robotique_color = 0984e3,
+    robotique_name = {Indroduction~à~la~robotique},
+}
+
+\bool_new:N \g_is_nick_in_list_bool
+\bool_set_false:N \g_is_nick_in_list_bool
+
+% Check if the provided nick is in the predefine list
+\prop_map_inline:Nn \l_courses_color_prop {
+    \tl_set_eq:NN \l_tmpa_tl \g_course_nick_tl
+    \tl_put_right:Nn \l_tmpa_tl {_color}
+
+    \tl_set:Nn \l_tmpb_tl {#1}
+
+    \str_if_eq:NNT \l_tmpb_tl \l_tmpa_tl
+    {
+        \prop_map_break:n {
+            \bool_set_true:N \g_is_nick_in_list_bool
+        }
+    }
+}
+
+% Sets the variables accordingly
+\bool_if:NT \g_is_nick_in_list_bool {
+    \tl_set_eq:NN \l_tmpa_tl \g_course_nick_tl
+    \tl_put_right:Nn \l_tmpa_tl {_color}
+
+    \prop_get:NoN \l_courses_color_prop \l_tmpa_tl \g_course_color_tl
+
+    \tl_set_eq:NN \l_tmpa_tl \g_course_nick_tl
+    \tl_put_right:Nn \l_tmpa_tl {_name}
+
+    \prop_get:NoN \l_courses_color_prop \l_tmpa_tl \g_course_name_tl
+}
+
+\definecolor{themecolor}{HTML}{\tl_use:N \g_course_color_tl}
+
+\ExplSyntaxOff
 
 \LoadClass[a4paper,titlepage,openany]{report}
-
-\RequirePackage{xcolor}
-\definecolor{themecolor}{HTML}{000000}
-\newcommand{\@subject}{Subject Name}
-
-\ifefrei@customsubject
-
-    \AddToHook{begindocument/before}{\definecolor{themecolor}{HTML}{\efrei@color}}
-    \renewcommand{\@subject}{\efrei@name}
-
-\fi
-
-\ifefrei@cloud
-    \definecolor{themecolor}{HTML}{8E402A}
-    \renewcommand{\@subject}{Cloud Computing}
-\fi
-\ifefrei@graphes
-    \definecolor{themecolor}{HTML}{ec2025}
-    \renewcommand{\@subject}{Théorie des graphes}
-\fi
-\ifefrei@reop
-    \definecolor{themecolor}{HTML}{face7a}
-    \renewcommand{\@subject}{Recherche opérationnelle}
-\fi
-\ifefrei@signal
-    \definecolor{themecolor}{HTML}{81ecec}
-    \renewcommand{\@subject}{Théorie du signal 1}
-\fi
-\ifefrei@cantrans
-    \definecolor{themecolor}{HTML}{7bbbfb}
-    \renewcommand{\@subject}{Canaux de transmission}
-\fi
-\ifefrei@comnum
-    \definecolor{themecolor}{HTML}{0984e3}
-    \renewcommand{\@subject}{Communication numérique}
-\fi
-\ifefrei@circuit
-    \definecolor{themecolor}{HTML}{b2bec3}
-    \renewcommand{\@subject}{Concéption de circuit numérique}
-\fi
-\ifefrei@circuitt
-    \definecolor{themecolor}{HTML}{b2bec3}
-    \renewcommand{\@subject}{Concéption de circuit numérique 2}
-\fi
-\ifefrei@signall
-    \definecolor{themecolor}{HTML}{81ecec}
-    \renewcommand{\@subject}{Théorie du signal 2}
-\fi
-\ifefrei@bdd
-    \definecolor{themecolor}{HTML}{1F3438}
-    \renewcommand{\@subject}{Bases de données avancées}
-\fi
-\ifefrei@machine
-    \definecolor{themecolor}{HTML}{7D8471}
-    \renewcommand{\@subject}{Introduction à l'apprentissage Machine}
-\fi
-
 
 
 \RequirePackage{graphicx} % images
@@ -104,6 +105,7 @@
 
 \RequirePackage{gensymb} % additional symbols
 
+\RequirePackage{array, boldline}
 
 \RequirePackage{listings} % code blocks
 
@@ -116,7 +118,7 @@
 \definecolor{ids}{HTML}{000000}
 
 \lstdefinestyle{codestyle}{
-    backgroundcolor=\color{backcolour},   
+    backgroundcolor=\color{backcolour},
     commentstyle=\color{comment},
     keywordstyle=\color{keywords},
     numberstyle=\tiny\color{sidenumbers},
@@ -125,44 +127,46 @@
     %
     basicstyle=\ttfamily\footnotesize,
     %
-    breakatwhitespace=false,         
-    breaklines=true,                 
-    caption=b,                    
+    breakatwhitespace=false,
+    breaklines=true,
     %
-    numbers=left,                    
-    numbersep=5pt,                  
-    %           
+    numbers=left,
+    numbersep=5pt,
+    %
+    captionpos=b,
+    %
     showstringspaces=false,
 }
 
 \lstset{style=codestyle}
 
-
-% custom parameters
-\providecommand{\subtitle}[1]{\providecommand{\@subtitle}{#1}}
-
+\ExplSyntaxOn
 \renewcommand{\maketitle}{%
     \begin{titlepage}
         \begin{center}
-            {\huge EFREI Paris }\\[3cm]
-            %
-            \includegraphics[scale=0.5]{logo_efrei.png}\\[4cm]
-            %
-            {\Large \bf \@subject}\\[2mm]
-            %
-            {\color{themecolor} \rule{\linewidth}{0.1cm}}\\[5mm]
-            %
-            {\Huge \@title}\\[3mm]
-            {\LARGE \@subtitle}\\[3.5mm]
-            %
-            {\color{themecolor} \rule{\linewidth}{0.1cm}}\\
-            %
+            \includegraphics[scale=0.5]{logo_efrei.png}
+
             \vfill
-            %
+
+            {\Large \bf \tl_use:N \g_course_name_tl}\\\vspace{2mm}
+
+            {\color{themecolor} \rule{\linewidth}{0.1cm}}\\\vspace{5mm}
+
+            {\Huge \tl_use:N \g_report_title_tl}\\\vspace{3mm}
+
+            \tl_if_empty:NTF \g_report_subtitle_tl {} {
+                {\LARGE \tl_use:N \g_report_subtitle_tl}\\\vspace{3.5mm}
+            }
+
+            {\color{themecolor} \rule{\linewidth}{0.1cm}}\\
+
+            \vfill
+
             {\Large \@author}
         \end{center}
     \end{titlepage}
 }
+\ExplSyntaxOff
 
 
 \definecolor{green}{RGB}{56, 140, 70}
@@ -198,22 +202,60 @@
 \setcounter{question_counter}{1}
 
 \newcommand{\exercise}[2][\arabic{exercise_counter}]{%
+\addcontentsline{toc}{section}{#1 #2}%
 \subsection*{#1 --- #2}
 \setcounter{exercise_counter}{#1+1}
 \setcounter{question_counter}{1}
 }
 
+\ExplSyntaxOn
+\bool_if:nT \g_use_large_document_bool
+{
+    \geometry{
+        a4paper,
+        left=15mm,
+        right=15mm,
+    }
+}
+\ExplSyntaxOff
 
 \newtcolorbox{_question}[1]{%
     enhanced,
     breakable,
-    %
-	title = #1,
-    sharp corners,
+    title = #1,
     boxrule = 0px,
     colframe = themecolor!80!black,
     colback = themecolor!15!white,
 }
+
+\newtcolorbox{_quote}{%
+    enhanced,
+    breakable,
+    frame hidden,
+    boxrule = 0sp,
+    borderline west = {4pt}{0pt}{white!50!black},
+    description font = \mdseries,
+    separator sign none,
+    colback = black!10!white,
+    segmentation style={solid, gray}
+}
+
+\newtcolorbox{_note}{%
+    enhanced,
+    breakable,
+    frame hidden,
+    boxrule = 0sp,
+    borderline west = {4pt}{0pt}{themecolor!50!black},
+    description font = \mdseries,
+    separator sign none,
+    colback = themecolor!30!white,
+    segmentation style={solid, themecolor}
+}
+
+
+\newcommand{\note}[1]{\begin{_note}#1\end{_note}}
+\renewcommand{\quote}[1]{\begin{_quote}#1\end{_quote}}
+
 
 \newcommand{\secondParameterVar}{}
 \newcommand{\question}[3][\arabic{question_counter}]{%
@@ -226,49 +268,24 @@
         }{
             \renewcommand{\secondParameterVar}{ - #2}
         }
-        
+
+        \addcontentsline{toc}{subsection}{\arabic{exercise_counter}.#1 #2}%
+
         \begin{_question}{\arabic{exercise_counter}.#1\secondParameterVar}%
             #3
         \end{_question}
-        
+
         \setcounter{question_counter}{#1+1}
         \setcounter{exercise_counter}{\value{exercise_counter}+1}
     }
     \vspace{2mm}
 }
 
-\newtcolorbox{_note}{%
-	enhanced,
-	breakable,
-	frame hidden,
-	boxrule = 0sp,
-	borderline west = {4pt}{0pt}{themecolor!50!black},
-	sharp corners,
-	description font = \mdseries,
-	separator sign none,
-	colback = themecolor!50!blue!10!white,
-	segmentation style={solid, themecolor}
-}
-\newcommand{\note}[1]{\begin{_note}#1\end{_note}}
-
-\newtcolorbox{_quote}{%
-	enhanced,
-	breakable,
-	frame hidden,
-	boxrule = 0sp,
-	borderline west = {4pt}{0pt}{white!50!black},
-	sharp corners,
-	description font = \mdseries,
-	separator sign none,
-	colback = black!10!white,
-	segmentation style={solid, gray}
-}
-\renewcommand{\quote}[1]{\begin{_quote}#1\end{_quote}}
-
-
 \RequirePackage{multicol} % for dividing certain elements in two
 
-\RequirePackage{hyperref} % text reference
+\RequirePackage{hyperref}
+
+\RequirePackage{capt-of}
 
 \definecolor{doc}{RGB}{0,60,110}
 \hypersetup{
@@ -281,33 +298,10 @@
 %\lstdefinestyle{highlight}{basicstyle=\ttfamily\bfseries\color{red}}
 \lstdefinestyle{highlight}{backgroundcolor=\color{green!30}}
 
-% input listing and emphasize a specific line
-% \lstinputemph[listings options]{line number}{filename}
-\newcommand{\lstinputemph}[3][\empty]{%                                                    
- \lstset{aboveskip=0pt, belowskip=0pt, showlines=true,#1}%
- \ifnumcomp{#2}{=}{0}{\lstinputlisting{#3}}{%
-   \ifnumcomp{#2}{=}{1}{}{\lstinputlisting[lastline=\the\numexpr#2-1\relax]{#3}}%            
-   \lstinputlisting[firstnumber={#2},firstline={#2},lastline={#2},style=highlight]{#3}
-   \lstinputlisting[firstnumber={\the\numexpr#2+1},firstline=\the\numexpr#2+1\relax]{#3}
- }% else
-}
+\renewcommand{\contentsname}{{Table des matières}}
 
-\makeatletter
-\let\old@lstKV@SwitchCases\lstKV@SwitchCases
-\def\lstKV@SwitchCases#1#2#3{}
-\makeatother
-\usepackage{lstlinebgrd}
-\makeatletter
-\let\lstKV@SwitchCases\old@lstKV@SwitchCases
+\newcommand{\inlinecode}[1]{\colorbox{lightgray}{\lstinline|#1|}}
+\renewcommand{\arraystretch}{1.5}
 
-\lst@Key{numbers}{none}{%
-    \def\lst@PlaceNumber{\lst@linebgrd}%
-    \lstKV@SwitchCases{#1}%
-    {none:\\%
-     left:\def\lst@PlaceNumber{\llap{\normalfont
-                \lst@numberstyle{\thelstnumber}\kern\lst@numbersep}\lst@linebgrd}\\%
-     right:\def\lst@PlaceNumber{\rlap{\normalfont
-                \kern\linewidth \kern\lst@numbersep
-                \lst@numberstyle{\thelstnumber}}\lst@linebgrd}%
-    }{\PackageError{Listings}{Numbers #1 unknown}\@ehc}}
-\makeatother
+\RequirePackage{pgfplots}
+\pgfplotsset{compat=1.18}

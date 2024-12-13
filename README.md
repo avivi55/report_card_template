@@ -1,19 +1,21 @@
 # report_card_template
 
-Personal Report card for my lab reports.\
+Personal Report card for my lab reports (now using LaTeX3).\
 ![](example.png)\
 The template is made for the courses that I follow. Thus, it probably isn't suited for everybody, but don't worry.
 
-It has hard coded courses with custom color themes. But you can setup your own with the `\setupcourse{}` directive. It takes a list of 2 arguments:
+It has hard coded courses with custom color themes. But you can setup your own by overriding the `documentclass` [parameters](./efrei_report_card.cls#L18):
 ```latex
-\setupcourse{
-    name = Test, % the name of the course
-    color = 098658, % the HTML format color to use as theme
-}
+\documentclass[
+    name={Custom Name},
+    color=ff0000,
+    title={Custom Title},
+    subtitle={Subtitle}
+]{efrei_report_card}
 ```
 The **theme** color is a base from which the header and background color of the `\question[]{}{}` directive are derived.
 
-To change the logo you must tinker with the code mainly [here](./efrei_report_card.cls#L149)
+To change the logo you must tinker with the code mainly [here](./efrei_report_card.cls#L147)
 
 This class offers 2 directives:
 * `\exercise[]{}{}`
@@ -43,4 +45,4 @@ This class offers 2 directives:
 ```
 
 ### THIS IS MY FIRST TIME MAKING A LATEX CLASS, IT IS PROBABLY DOG WATER. 
-(it uses the arev font)
+(it uses the `arev` font by default)

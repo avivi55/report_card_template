@@ -1,15 +1,21 @@
-\documentclass[customsubject]{efrei_report_card}
+% You can choose from the predefined
+% \documentclass[
+%     nick=robotique,
+%     title=Title,
+%     subtitle={Subtitle}
+% ]{efrei_report_card}
 
-\title{Lab Report n\degree{1}}
-\subtitle{test}
+% Or use a custom color
+\documentclass[
+    name={Custom Name},
+    color=ff0000,
+    title=Title,
+    subtitle={Subtitle}
+]{efrei_report_card}
 
-\author{Author}
+% \usepackage{hyperref}
 
-\setupcourse{
-    name = Test,
-    color = 098658,
-}
-
+\author{Jacques Soghomonyan}
 
 \begin{document}
     \maketitle
@@ -47,5 +53,7 @@
             \end{multicols}
         }
     }
+
+
 
 \end{document}
