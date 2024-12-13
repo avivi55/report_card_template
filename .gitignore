@@ -1,3 +1,5 @@
 .vscode
 *.gz
 .idea
+*.aux
+*.log
